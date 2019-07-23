@@ -96,7 +96,7 @@ public class UploadSourceCode extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Code :");
 
-        langugagecombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "java ", "c++", "python", "c# ", "ruby and Rails ", "bootstrap ", "css ", "xamond", " " }));
+        langugagecombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "java", "c++", "python", "c#", "ruby and Rails", "bootstrap", "css", "xamond", " " }));
 
         codearea.setColumns(20);
         codearea.setRows(5);

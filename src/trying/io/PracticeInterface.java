@@ -7,6 +7,8 @@ package trying.io;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.util.Map;
+import java.util.HashMap;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,76 +28,68 @@ public class PracticeInterface extends javax.swing.JFrame {
      */
     public PracticeInterface() throws IOException {
         initComponents();
-        Timing();
-       
-    } 
+    }
     
-      int second=60; 
-  Timer timer = new Timer();  
-  TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            if(second ==0)
-            {
-                timer.cancel();
-                timer.purge();
-            }
-            second--; 
-            System.out.println(second);
-           
-             //To change body of generated methods, choose Tools | Templates.
-        }
-    }; 
-          
+    // Priacte Members
+    private int seconds;
+    private String originalcode;
+    private int index = 0;
+    private int wps = 0;
+    
+    Map<Character, Integer> chars = new HashMap();
+//    char chars[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
          
-  public void Timing ()
-  {
-     timerlabel.setText(second+"");
-      timer.scheduleAtFixedRate(task, 1000, 1000);
-  }
-    
-    
-    
-  
+    public void Timing ()
+    {
+        seconds = 60; 
+        Timer timer = new Timer();  
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(seconds == 0) {
+                    timer.cancel();
+                    timer.purge();
+                }   
+                seconds--;
+                timerlabel.setText(seconds+"");
+            }
+        }; 
+        timer.scheduleAtFixedRate(task, 1000, 1000);
+    }
     
     public void getCode() throws FileNotFoundException
     {
-        
-        
-      
-     
-      String filename= languagecombobox.getSelectedItem().toString()+" .txt"; 
-       System.out.println(filename);
+        String filename= languagecombobox.getSelectedItem().toString()+".txt"; 
+        System.out.println(filename);
   
         BufferedReader br = new BufferedReader(new FileReader(filename));       
-       String st;
-        String originalcode  = original.getText(); 
+        String st;
+        originalcode  = original.getText(); 
         try {
             while ((st = br.readLine()) != null)
             {
-                originalcode = originalcode+st ;
+                originalcode = originalcode + st + "\n" ;
                  
             }
         } catch (IOException ex) {
             Logger.getLogger(PracticeInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
-         original.setText(originalcode);
-             
+        original.setText(originalcode);
     }
     
     public void comparing ()
     {
-         char []arr= new char[10000];
-       String  text= original.getText(); 
-       String text2 = userarea.getText() ;
-       int size = text.length(); 
-       int size2= text2.length();
-       int count =0 ; 
-       for(int i=0;i<text.length();i++)
-       {
-           if(text.charAt(i)!=text2.charAt(i))
-               count++; 
-       }
+        char []arr= new char[10000];
+        String  text= original.getText(); 
+        String text2 = userarea.getText() ;
+        int size = text.length(); 
+        int size2= text2.length();
+        int count =0 ; 
+        for(int i=0;i<text.length();i++)
+        {
+            if(text.charAt(i)!=text2.charAt(i))
+            count++; 
+        }
         System.out.println(count); 
     }
     /**
@@ -129,7 +123,7 @@ public class PracticeInterface extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("tmie remaning");
 
-        timerlabel.setText("jLabel5");
+        timerlabel.setText("60");
 
         original.setColumns(20);
         original.setRows(5);
@@ -137,6 +131,11 @@ public class PracticeInterface extends javax.swing.JFrame {
 
         userarea.setColumns(20);
         userarea.setRows(5);
+        userarea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                userareaKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(userarea);
 
         jButton1.setText("End ");
@@ -157,31 +156,30 @@ public class PracticeInterface extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(262, 262, 262)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(languagecombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(65, 65, 65)
-                .addComponent(timerlabel)
-                .addGap(83, 83, 83))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel4)
+                                        .addGap(60, 60, 60))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(42, 42, 42)
+                                        .addComponent(languagecombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(timerlabel)))))
                         .addGap(100, 100, 100))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(91, 91, 91))))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(289, 289, 289))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,12 +212,44 @@ public class PracticeInterface extends javax.swing.JFrame {
 
     private void languagecomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_languagecomboboxActionPerformed
         try {
-            // TODO add your handling code here:
             getCode();
+            Timing();
         } catch (IOException ex) {
             Logger.getLogger(PracticeInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_languagecomboboxActionPerformed
+
+    private void userareaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userareaKeyPressed
+        if(evt.getKeyCode() != 16) {
+            boolean correctWord = true;
+            int errors = 0;
+            if(evt.getKeyChar() == originalcode.charAt(index)) {
+                correctWord = true;
+            } else {
+                if(chars.get(evt.getKeyChar()) == null) {
+                    chars.put(evt.getKeyChar(), 1);
+                } else {
+                    chars.put(evt.getKeyChar(), chars.get(evt.getKeyChar()) + 1);
+                }
+                System.out.println(chars.get(evt.getKeyChar()));
+                errors++;
+                correctWord = false;
+            }
+            // Backspace
+            if(evt.getKeyCode() == 8) {
+                index--;
+            }
+            // Enter
+            else if(evt.getKeyCode() == 10) {
+
+            }
+            // Space
+            else if(evt.getKeyChar() == ' ') {
+
+            }
+            index++;
+        }
+    }//GEN-LAST:event_userareaKeyPressed
 
     /**
      * @param args the command line arguments
