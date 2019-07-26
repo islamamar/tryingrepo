@@ -83,6 +83,8 @@ public class PracticeInterface extends javax.swing.JFrame {
     public void typingCalculation  ()
     {
         corret_chars = originalcode.length() - errors  ; 
+     
+        System.out.println("corret_chars"+ corret_chars);
         wpm =  corret_chars/5 ; 
     }
     public  void  result() 
@@ -206,9 +208,12 @@ public class PracticeInterface extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:  
-         result();
+             typingCalculation();
+                result();
+         
+    
        
-        new Results().setVisible(true);
+        new Results(wpm,errors, chars).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void languagecomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_languagecomboboxActionPerformed
