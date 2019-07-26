@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  *
  * @author 123456789
  */
+
 public class PracticeInterface extends javax.swing.JFrame {
 
     /**
@@ -34,7 +35,9 @@ public class PracticeInterface extends javax.swing.JFrame {
     private int seconds;
     private String originalcode;
     private int index = 0;
-    private int wps = 0;
+    private int wpm = 0;
+      int errors = 0; 
+     int corret_chars = 0; 
     
     Map<Character, Integer> chars = new HashMap();
 //    char chars[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
@@ -77,21 +80,18 @@ public class PracticeInterface extends javax.swing.JFrame {
         original.setText(originalcode);
     }
     
-    public void comparing ()
+    public void typingCalculation  ()
     {
-        char []arr= new char[10000];
-        String  text= original.getText(); 
-        String text2 = userarea.getText() ;
-        int size = text.length(); 
-        int size2= text2.length();
-        int count =0 ; 
-        for(int i=0;i<text.length();i++)
-        {
-            if(text.charAt(i)!=text2.charAt(i))
-            count++; 
-        }
-        System.out.println(count); 
+        corret_chars = originalcode.length() - errors  ; 
+        wpm =  corret_chars/5 ; 
     }
+    public  void  result() 
+    {
+       for (Map.Entry<Character,Integer> entry : chars.entrySet())  
+            System.out.println("Key = " + entry.getKey() + 
+                             ", Value = " + entry.getValue());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -205,8 +205,9 @@ public class PracticeInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here: 
-        comparing(); 
+        // TODO add your handling code here:  
+         result();
+       
         new Results().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -220,35 +221,39 @@ public class PracticeInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_languagecomboboxActionPerformed
 
     private void userareaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userareaKeyPressed
-        if(evt.getKeyCode() != 16) {
+       // System.out.println(evt.getKeyCode());
+        if(evt.getKeyCode() != 16 && evt.getKeyCode()!=8) {
             boolean correctWord = true;
-            int errors = 0;
+          
             if(evt.getKeyChar() == originalcode.charAt(index)) {
-                correctWord = true;
+               ; 
             } else {
                 if(chars.get(evt.getKeyChar()) == null) {
-                    chars.put(evt.getKeyChar(), 1);
+                    chars.put(evt.getKeyChar(), 1); 
+                    errors++; 
                 } else {
                     chars.put(evt.getKeyChar(), chars.get(evt.getKeyChar()) + 1);
+                       errors++; 
                 }
-                System.out.println(chars.get(evt.getKeyChar()));
-                errors++;
-                correctWord = false;
+               // System.out.println(chars.get(evt.getKeyChar()));
+                System.out.println(errors);
+               
             }
-            // Backspace
-            if(evt.getKeyCode() == 8) {
-                index--;
-            }
+            
             // Enter
-            else if(evt.getKeyCode() == 10) {
+             if(evt.getKeyCode() == 10) {
 
             }
             // Space
-            else if(evt.getKeyChar() == ' ') {
+             if(evt.getKeyChar() == ' ') {
 
             }
             index++;
         }
+        // Backspace
+            if(evt.getKeyCode() == 8) {
+                index--;
+            }
     }//GEN-LAST:event_userareaKeyPressed
 
     /**
