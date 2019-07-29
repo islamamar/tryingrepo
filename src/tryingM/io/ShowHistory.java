@@ -5,6 +5,15 @@
  */
 package tryingM.io;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 123456789
@@ -16,18 +25,69 @@ public class ShowHistory extends javax.swing.JFrame {
      */
     public ShowHistory() {
         initComponents();
+        
     }
     String tablename ; 
     
+    
+   
+     
        public ShowHistory(String table)
        {    
+        
             initComponents();
+            CreatConnection();
             tablename = table; 
+            JOptionPane.showMessageDialog(null, tablename);
+            displayResult();
+        
        }
        
+        Connection con ;
+     void CreatConnection()
+     {
+        
+             
+        try { 
+            Class.forName("com.mysql.jdbc.Driver");            
+            con=DriverManager.getConnection("jdbc:mysql:// localhost:3306/tryingio","root","1234");
+            System.out.println("Database connection sucees ");
+        } catch (SQLException ex) {
+            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+     }
+       
        public void displayResult() 
-       {
+       {        
+      
+        try {
+            Statement stmt = con.createStatement() ;
+            ResultSet rs = stmt.executeQuery("SELECT * FROM "+tablename);
+             
+              String str = ""; 
+              while(rs.next())
+              {
+                   String user = rs.getString("user") ; 
+              int typingspeed = rs.getInt("typingspeed");
+              int errors = rs.getInt("errors"); 
+              typespeedlabel.setText(typingspeed+"");
+              errorlabel.setText(errors+"");
+               String key= rs.getString("ckey");
+               String value = rs.getString("value");
+              
+               String line = key + " : "+ value+" times\n"; 
+                 str = str +line;
+               errorlist.setText(str);
+              }
+        } catch (SQLException ex) {
+            Logger.getLogger(ShowHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
            
+             
+       
        }
 
     /**
@@ -39,17 +99,77 @@ public class ShowHistory extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        typespeedlabel = new javax.swing.JLabel();
+        errorlabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        errorlist = new javax.swing.JTextArea();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Your Result ");
+
+        jLabel2.setText("Typing Speed ");
+
+        jLabel3.setText("Number of Errors");
+
+        jLabel4.setText("List of errors ");
+
+        typespeedlabel.setText("jLabel5");
+
+        errorlabel.setText("jLabel6");
+
+        errorlist.setColumns(20);
+        errorlist.setRows(5);
+        jScrollPane1.setViewportView(errorlist);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(189, 189, 189)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(82, 82, 82)
+                                .addComponent(typespeedlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(59, 59, 59)
+                                .addComponent(errorlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 334, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(typespeedlabel))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(errorlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -91,5 +211,13 @@ public class ShowHistory extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errorlabel;
+    private javax.swing.JTextArea errorlist;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel typespeedlabel;
     // End of variables declaration//GEN-END:variables
 }
