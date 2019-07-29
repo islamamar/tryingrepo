@@ -10,6 +10,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +24,7 @@ public class Result_History extends javax.swing.JFrame {
      * Creates new form Result_History
      */ 
     String user; 
+    ArrayList<String>arrlist = new ArrayList<String>() ; 
     public Result_History() {
         initComponents();
         CreatConnection();
@@ -65,15 +67,24 @@ public class Result_History extends javax.swing.JFrame {
             DatabaseMetaData md = con.getMetaData();
             String[] types = {"TABLE"};
             ResultSet rs = md.getTables(null, null, "%", types);
-              String str = "" ; 
+             
             while (rs.next()) {
                // System.out.println(rs.getString(3));
                if(rs.getString(3).indexOf(user)!= -1)
                { 
-                  str = str+rs.getString(3)+"\n"; 
-                   tablenamesarea.setText(str );
+                  arrlist.add(rs.getString(3)) ; 
+                 
                }
-            }       } catch (SQLException ex) {
+            }      
+            
+            int size = arrlist.size(); 
+            String arr[] = new String[size]; 
+            for(int i =0 ;i<size ;i++)
+            {
+                arr[i]= arrlist.get(i); 
+            }
+            tablenamesarea.setListData(arr);
+        } catch (SQLException ex) {
             Logger.getLogger(Result_History.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -90,25 +101,28 @@ public class Result_History extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablenamesarea = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         userlabel = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablenamesarea = new javax.swing.JList<>();
 
         jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        tablenamesarea.setColumns(20);
-        tablenamesarea.setRows(5);
-        jScrollPane1.setViewportView(tablenamesarea);
 
         jLabel1.setText("History");
 
         jLabel2.setText("UserName");
 
         userlabel.setText("jLabel4");
+
+        tablenamesarea.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                tablenamesareaValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablenamesarea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,8 +137,8 @@ public class Result_History extends javax.swing.JFrame {
                 .addComponent(userlabel)
                 .addGap(40, 40, 40))
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -138,14 +152,25 @@ public class Result_History extends javax.swing.JFrame {
                             .addComponent(userlabel)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addComponent(jLabel1)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tablenamesareaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tablenamesareaValueChanged
+        // TODO add your handling code here:
+        int index = tablenamesarea.getSelectedIndex(); 
+      
+        if (index != -1)
+        {    String name = tablenamesarea.getSelectedValue(); 
+            System.out.println("selected value"+ name);
+            new ShowHistory(name).setVisible(true);
+        }
+    }//GEN-LAST:event_tablenamesareaValueChanged
 
     /**
      * @param args the command line arguments
@@ -186,8 +211,8 @@ public class Result_History extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea tablenamesarea;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> tablenamesarea;
     private javax.swing.JLabel userlabel;
     // End of variables declaration//GEN-END:variables
 }

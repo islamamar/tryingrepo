@@ -17,6 +17,18 @@ public class ShowHistory extends javax.swing.JFrame {
     public ShowHistory() {
         initComponents();
     }
+    String tablename ; 
+    
+       public ShowHistory(String table)
+       {    
+            initComponents();
+            tablename = table; 
+       }
+       
+       public void displayResult() 
+       {
+           
+       }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,11 +45,11 @@ public class ShowHistory extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 550, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 334, Short.MAX_VALUE)
         );
 
         pack();
