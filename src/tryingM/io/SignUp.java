@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -63,9 +64,37 @@ public class SignUp extends javax.swing.JFrame {
     public void Verification() 
     {
         try {
+            String user ;
+            String pass;
+            String usertext= username.getText(); 
+            String Passtext = password.getText() ;
             Statement stmt = con.createStatement() ; 
             ResultSet rs = stmt.executeQuery("SELECT * FROM REGISTRATION");
-            
+            boolean found = false ; 
+             while(rs.next())
+             {  
+              
+                 user = rs.getString("username"); 
+                 pass= rs.getString("password"); 
+                    System.out.println("user  "+user + "  pass"+ pass);
+                 if(user.equals(usertext)  && pass.equals(Passtext) )
+                    
+                 {
+                     
+                     found =true ;
+                     break ;                                     
+                 
+                 }
+                        
+             } 
+             if(found==false)
+             {
+                 JOptionPane.showMessageDialog(null ,"You Should  Register to type ): ");
+             }
+             else 
+             {
+                 new UploadSourceCode(usertext).setVisible(true);
+             }
         } catch (SQLException ex) {
             Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -201,6 +230,11 @@ public class SignUp extends javax.swing.JFrame {
         );
 
         jButton2.setText("SignUp");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -264,6 +298,11 @@ public class SignUp extends javax.swing.JFrame {
         // TODO add your handling code here:
         insert();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Verification();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
