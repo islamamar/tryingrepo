@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +31,8 @@ public class Results extends javax.swing.JFrame {
         initComponents();
         CreatConnection();
     } 
-
+    String tablename ; 
+Map<Character, Integer> newmap = new HashMap<>(); 
     public Results(int wpm, int errors, Map<Character, Integer> chars) {
           initComponents();
           CreatConnection();
@@ -41,10 +43,12 @@ public class Results extends javax.swing.JFrame {
          {              //  try to write space in errorarea 
              if(entry.getValue()>1){
             str = entry.getKey()+": "+ entry.getValue()+" times\n"+str ; 
+            newmap.put(entry.getKey(), entry.getValue()); 
              }
              else 
              {
                   str = entry.getKey()+": "+ entry.getValue()+" time\n"+str ; 
+                   newmap.put(entry.getKey(), entry.getValue()); 
              }
              errorarea.setText(str);
          }
@@ -86,10 +90,12 @@ public class Results extends javax.swing.JFrame {
          {              //  try to write space in errorarea 
              if(entry.getValue()>1){
             str = entry.getKey()+": "+ entry.getValue()+" times\n"+str ; 
+            newmap.put(entry.getKey(), entry.getValue()); 
              }
              else 
              {
                   str = entry.getKey()+": "+ entry.getValue()+" time\n"+str ; 
+                  newmap.put(entry.getKey(), entry.getValue()); 
              }
              errorarea.setText(str);
          }
@@ -120,10 +126,10 @@ public class Results extends javax.swing.JFrame {
         try {
             // but the  history  happen when usernamelabel!= jlabel6
             Date date = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
+            SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmm");
             //System.out.println(formatter.format(date));
             String user = usernamelabel.getText();
-            String tablename = user + formatter.format(date) ;
+             tablename = user + formatter.format(date) ;
             System.out.println(formatter.format(date));
          // String table = "CREATE TABLE "+tablename+"(user varchar(100),typingspeed int, errors int,value varchar(100), key int);";
 //         String CREATE_TABLE_SQL="CREATE TABLE `boraji.users ("
@@ -157,6 +163,7 @@ public class Results extends javax.swing.JFrame {
             
             System.out.println("creating table done succesfully");
             stmt.close();
+            Insertion();
         } catch (SQLException ex) {
             Logger.getLogger(Results.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -165,8 +172,37 @@ public class Results extends javax.swing.JFrame {
     
     
     
-    public void insertion()
-    {
+    public void Insertion()
+    { 
+        try {
+            String username =  usernamelabel.getText() ;
+            int typingspeed = Integer.parseInt(speedlabel.getText());
+            int errors = Integer.parseInt(errorslabel.getText());
+            System.out.println(newmap.size());
+               for (Map.Entry<Character,Integer> entry : newmap.entrySet()) 
+         {              //  try to write space in errorarea 
+             System.out.println("hellowman");
+             PreparedStatement stmt  =  con.prepareStatement("INSERT INTO "+tablename+" VALUES(?,?,?,?,?)");
+            stmt.setString(1, username);
+            stmt.setInt(2, typingspeed) ; 
+             stmt.setInt(3, errors);
+           stmt.setString(4, entry.getKey().toString());
+               stmt.setInt(5, entry.getValue());
+               
+           stmt.execute();
+             System.out.println("inserted mm");
+             stmt.close();
+            
+           
+         }
+             
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Results.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+        
         
     }
 

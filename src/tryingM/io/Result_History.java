@@ -5,6 +5,14 @@
  */
 package tryingM.io;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author 123456789
@@ -16,6 +24,38 @@ public class Result_History extends javax.swing.JFrame {
      */
     public Result_History() {
         initComponents();
+        CreatConnection();
+        Searching();
+    }
+    
+     Connection con ;
+     void CreatConnection()
+     {
+        
+             
+        try { 
+            Class.forName("com.mysql.jdbc.Driver");            
+            con=DriverManager.getConnection("jdbc:mysql:// localhost:3306/tryingio","root","1234");
+            System.out.println("Database connection sucees ");
+        } catch (SQLException ex) {
+            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
+     //  used to get all table name from schema 
+    public void Searching()
+    {
+         
+        try {
+            DatabaseMetaData md = con.getMetaData();
+            String[] types = {"TABLE"};
+            ResultSet rs = md.getTables(null, null, "%", types);
+            while (rs.next()) {
+                System.out.println(rs.getString(3));
+            }       } catch (SQLException ex) {
+            Logger.getLogger(Result_History.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
