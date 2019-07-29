@@ -5,7 +5,16 @@
  */
 package tryingM.io;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,10 +28,12 @@ public class Results extends javax.swing.JFrame {
      */
     public Results() {
         initComponents();
+        CreatConnection();
     } 
 
     public Results(int wpm, int errors, Map<Character, Integer> chars) {
           initComponents();
+          CreatConnection();
           String str= ""; 
           speedlabel.setText(wpm+"");
          errorslabel.setText(errors+"");
@@ -39,12 +50,34 @@ public class Results extends javax.swing.JFrame {
          }
             //System.out.println("Key = " + entry.getKey() + 
                            //  ", Value = " + entry.getValue());
+         if(usernamelabel.getText()!="jLabel6")
+          {
+              HistroryCreation();
+          }
          
           
     } 
+     Connection con ;
+     void CreatConnection()
+     {
+        
+             
+        try { 
+            Class.forName("com.mysql.jdbc.Driver");            
+            con=DriverManager.getConnection("jdbc:mysql:// localhost:3306/tryingio","root","1234");
+            System.out.println("Database connection sucees ");
+        } catch (SQLException ex) {
+            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+     }
+     
     
     public Results(int wpm, int errors, Map<Character, Integer> chars,String user) {
           initComponents();
+          CreatConnection();
           String str= ""; 
           JOptionPane.showMessageDialog(this, user);
           speedlabel.setText(wpm+"");
@@ -62,8 +95,13 @@ public class Results extends javax.swing.JFrame {
          }
             //System.out.println("Key = " + entry.getKey() + 
                            //  ", Value = " + entry.getValue());
+                          
          
           usernamelabel.setText(user);
+          if(usernamelabel.getText()!="jLabel6")
+          {
+              HistroryCreation();
+          }
     } 
     public void history(){
         
@@ -76,6 +114,60 @@ public class Results extends javax.swing.JFrame {
         {
          new Result_History().setVisible(true);
         }
+    } 
+    public void HistroryCreation()
+    { 
+        try {
+            // but the  history  happen when usernamelabel!= jlabel6
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
+            //System.out.println(formatter.format(date));
+            String user = usernamelabel.getText();
+            String tablename = user + formatter.format(date) ;
+            System.out.println(formatter.format(date));
+         // String table = "CREATE TABLE "+tablename+"(user varchar(100),typingspeed int, errors int,value varchar(100), key int);";
+//         String CREATE_TABLE_SQL="CREATE TABLE `boraji.users ("
+//                    + "UID INT NOT NULL,"
+//                    + "NAME VARCHAR(45) NOT NULL,"
+//                    + "DOB DATE NOT NULL,"
+//                    + "EMAIL VARCHAR(45) NOT NULL,"
+//                    + "PRIMARY KEY (UID))";
+
+//       String sql =  "CREATE TABLE "+tablename
+//                   +"(user varchar(100) , "
+//                   +"typingspeed int,"
+//                   +"errors int, "
+//                   +"value varchar(100),"
+//                   +"key int "
+//                  
+//                   +" );" ;
+ String sql =  "CREATE TABLE " +tablename+" ("
+   +" user varchar(255),"
+    +" typingspeed int,"
+   + "errors int,"
+   + "ckey varchar(255),"
+  +" value int" 
++"); " ;      
+            
+            System.out.println(tablename);
+   //   PreparedStatement stmt  =  con.prepareStatement("CREATE TABLE db( user VARCHAR(100),typingspeed INT, errors NT,value VARCHAR(100), key INT );");
+
+            Statement stmt = con.createStatement();
+            stmt.execute(sql);
+            
+            System.out.println("creating table done succesfully");
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Results.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
+    
+    public void insertion()
+    {
+        
     }
 
 
