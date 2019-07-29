@@ -233,9 +233,15 @@ public class PracticeInterface extends javax.swing.JFrame {
              typingCalculation();
                 result();
          
-    
-       
+    if (usernamelabel.getText() =="jLabel5")   
+    {
         new Results(wpm,errors, chars).setVisible(true);
+    }
+    else 
+    { 
+        String User = usernamelabel.getText(); 
+         new Results(wpm,errors, chars,User).setVisible(true);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void languagecomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_languagecomboboxActionPerformed

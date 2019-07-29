@@ -6,6 +6,7 @@
 package tryingM.io;
 
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -41,6 +42,42 @@ public class Results extends javax.swing.JFrame {
          
           
     } 
+    
+    public Results(int wpm, int errors, Map<Character, Integer> chars,String user) {
+          initComponents();
+          String str= ""; 
+          JOptionPane.showMessageDialog(this, user);
+          speedlabel.setText(wpm+"");
+         errorslabel.setText(errors+"");
+         for (Map.Entry<Character,Integer> entry : chars.entrySet()) 
+         {              //  try to write space in errorarea 
+             if(entry.getValue()>1){
+            str = entry.getKey()+": "+ entry.getValue()+" times\n"+str ; 
+             }
+             else 
+             {
+                  str = entry.getKey()+": "+ entry.getValue()+" time\n"+str ; 
+             }
+             errorarea.setText(str);
+         }
+            //System.out.println("Key = " + entry.getKey() + 
+                           //  ", Value = " + entry.getValue());
+         
+          usernamelabel.setText(user);
+    } 
+    public void history(){
+        
+        
+        if (usernamelabel.getText()=="")
+        {
+            JOptionPane.showMessageDialog(null, " You should register to show your history ):");
+        }
+        else
+        {
+         new Result_History().setVisible(true);
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,7 +98,7 @@ public class Results extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         errorarea = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        usernamelabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,9 +126,9 @@ public class Results extends javax.swing.JFrame {
         errorarea.setRows(5);
         jScrollPane1.setViewportView(errorarea);
 
-        jLabel5.setText("jLabel5");
+        jLabel5.setText("UserName");
 
-        jLabel6.setText("jLabel6");
+        usernamelabel.setText("jLabel6");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,9 +139,9 @@ public class Results extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jLabel5)
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel6)
-                        .addGap(74, 74, 74)
+                        .addGap(68, 68, 68)
+                        .addComponent(usernamelabel)
+                        .addGap(96, 96, 96)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(133, 133, 133)
@@ -118,8 +155,9 @@ public class Results extends javax.swing.JFrame {
                                 .addGap(61, 61, 61)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(speedlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(errorslabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(165, Short.MAX_VALUE))
+                                    .addComponent(errorslabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)))
+                .addGap(54, 54, 54))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -133,12 +171,12 @@ public class Results extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(jLabel6)))
+                        .addComponent(usernamelabel)))
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(speedlabel))
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(errorslabel))
@@ -146,7 +184,7 @@ public class Results extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(27, 27, 27))
         );
@@ -203,8 +241,8 @@ public class Results extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel speedlabel;
+    private javax.swing.JLabel usernamelabel;
     // End of variables declaration//GEN-END:variables
 }
