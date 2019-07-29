@@ -21,12 +21,26 @@ public class Result_History extends javax.swing.JFrame {
 
     /**
      * Creates new form Result_History
-     */
+     */ 
+    String user; 
     public Result_History() {
         initComponents();
         CreatConnection();
-        Searching();
+        tableNameSearching();
+        
     }
+    
+     public Result_History(String user) {
+        initComponents();
+        CreatConnection();
+        
+        this.user= user ;        
+        userlabel.setText(user);
+         tableNameSearching();
+        
+    }
+    
+    
     
      Connection con ;
      void CreatConnection()
@@ -44,19 +58,27 @@ public class Result_History extends javax.swing.JFrame {
         }
      }
      //  used to get all table name from schema 
-    public void Searching()
+    public void tableNameSearching()
     {
          
         try {
             DatabaseMetaData md = con.getMetaData();
             String[] types = {"TABLE"};
             ResultSet rs = md.getTables(null, null, "%", types);
+              String str = "" ; 
             while (rs.next()) {
-                System.out.println(rs.getString(3));
+               // System.out.println(rs.getString(3));
+               if(rs.getString(3).indexOf(user)!= -1)
+               { 
+                  str = str+rs.getString(3)+"\n"; 
+                   tablenamesarea.setText(str );
+               }
             }       } catch (SQLException ex) {
             Logger.getLogger(Result_History.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,24 +91,24 @@ public class Result_History extends javax.swing.JFrame {
 
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        tablenamesarea = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        userlabel = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        tablenamesarea.setColumns(20);
+        tablenamesarea.setRows(5);
+        jScrollPane1.setViewportView(tablenamesarea);
 
         jLabel1.setText("History");
 
         jLabel2.setText("UserName");
 
-        jLabel4.setText("jLabel4");
+        userlabel.setText("jLabel4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,7 +120,7 @@ public class Result_History extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(84, 84, 84)
-                .addComponent(jLabel4)
+                .addComponent(userlabel)
                 .addGap(40, 40, 40))
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
@@ -113,7 +135,7 @@ public class Result_History extends javax.swing.JFrame {
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4)))
+                            .addComponent(userlabel)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)
@@ -164,8 +186,8 @@ public class Result_History extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea tablenamesarea;
+    private javax.swing.JLabel userlabel;
     // End of variables declaration//GEN-END:variables
 }
