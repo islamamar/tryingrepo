@@ -94,8 +94,6 @@ public class UploadSourceCode extends javax.swing.JFrame {
         usernamelabel = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Upload Source Code");
 
